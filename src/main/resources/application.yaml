@@ -1,0 +1,19 @@
+server:
+  port: 9000
+
+spring:
+  jpa:
+    hibernate:
+      dll-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/VitaSoftDB
+    username: postgres
+    password: qwerty
+    driver-class-name: org.postgresql.Driver
