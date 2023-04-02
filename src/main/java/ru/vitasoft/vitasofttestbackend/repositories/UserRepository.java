@@ -9,4 +9,7 @@ import java.util.ArrayList;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
     ArrayList<UserEntity> findAll();
+    UserEntity findUserEntityById(Long userId);
+    UserEntity findUserEntityByLogin(String login);
+    ArrayList<UserEntity> findUserEntitiesByLoginContaining(String loginPart);
 }

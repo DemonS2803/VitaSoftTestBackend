@@ -17,3 +17,16 @@ spring:
     username: postgres
     password: qwerty
     driver-class-name: org.postgresql.Driver
+
+jwt:
+  header:
+    Authorization
+  secret:
+    spmi
+  time:
+    expired:
+      5000
+    accept:
+      300
+  issuer:
+    app

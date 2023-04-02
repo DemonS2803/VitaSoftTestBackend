@@ -1,6 +1,7 @@
 package ru.vitasoft.vitasofttestbackend.services;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -12,8 +13,8 @@ import ru.vitasoft.vitasofttestbackend.repositories.UserRepository;
 import java.util.ArrayList;
 
 @Service
-@AllArgsConstructor
 public class UserService {
+    @Autowired
     private UserRepository userRepository;
 
     public Page<UserEntity> usersPagination(int offset, int limit) {
@@ -30,5 +31,13 @@ public class UserService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public UserEntity getUserById(Long id) {
+        return userRepository.findUserEntityById(id);
+    }
+
+    public UserEntity getUserByLogin(String login) {
+        return userRepository.findUserEntityByLogin(login);
     }
 }

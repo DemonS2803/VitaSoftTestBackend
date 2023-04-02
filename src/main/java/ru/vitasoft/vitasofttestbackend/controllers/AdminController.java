@@ -11,7 +11,6 @@ import ru.vitasoft.vitasofttestbackend.entities.UserEntity;
 import ru.vitasoft.vitasofttestbackend.services.UserService;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/api/admin")
 public class AdminController {
 
