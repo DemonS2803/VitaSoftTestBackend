@@ -10,8 +10,7 @@ import ru.vitasoft.vitasofttestbackend.repositories.StatementRepository;
 import ru.vitasoft.vitasofttestbackend.repositories.UserRepository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -91,6 +90,29 @@ public class StatementService {
         ArrayList<StatementEntity> statements = statementRepository.findStatementEntitiesByStatus(StatementStatus.valueOf(status));
         System.out.println(statements.size());
         statements = (ArrayList<StatementEntity>) statements.stream().filter(x -> x.getOwner().getLogin().contains(userLoginPart)).collect(Collectors.toList());
+        if (!isReverseSort) {
+            Collections.sort(statements, new Comparator<StatementEntity>() {
+                @Override
+                public int compare(StatementEntity o1, StatementEntity o2) {
+                    try {
+                        return o1.getCreated().compareTo(o2.getCreated());
+                    } catch (Exception e) {
+                        return 1;
+                    }
+                }
+            });
+        } else {
+            Collections.sort(statements, new Comparator<StatementEntity>() {
+                @Override
+                public int compare(StatementEntity o1, StatementEntity o2) {
+                    try {
+                        return o1.getCreated().compareTo(o2.getCreated());
+                    } catch (Exception e) {
+                        return 0;
+                    }
+                }
+            }.reversed());
+        }
         System.out.println(statements.size());
         if (statements.size() < 5) {
             return statements;

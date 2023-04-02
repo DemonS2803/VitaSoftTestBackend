@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.vitasoft.vitasofttestbackend.dto.AuthRequestDTO;
 import ru.vitasoft.vitasofttestbackend.dto.ResponceDTO;
 import ru.vitasoft.vitasofttestbackend.dto.UserDTO;
+import ru.vitasoft.vitasofttestbackend.entities.UserEntity;
 import ru.vitasoft.vitasofttestbackend.enums.Role;
 import ru.vitasoft.vitasofttestbackend.security.JwtUtils;
 import ru.vitasoft.vitasofttestbackend.services.UserService;
@@ -37,8 +38,9 @@ public class LoginController {
     private JwtUtils jwtUtils;
 
     @GetMapping("/")
-    public ResponseEntity<?> login() {
+    public ResponseEntity<?> login() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         System.out.println("encoded tet is " + passwordEncoder.encode("test"));
+        System.out.println("encoded tet is " + userService.toSha1("test"));
         return new ResponseEntity<>(new ResponceDTO("Hello World", new UserDTO()), HttpStatus.OK);
     }
 
@@ -47,18 +49,19 @@ public class LoginController {
 
         System.out.println(loginRequest);
 
+        UserEntity user = userService.getUserByLogin(loginRequest.getLogin());
+
         Authentication authentication = authenticateUser(loginRequest.getLogin(), loginRequest.getPassword());
 
-        String jwt = jwtUtils.generateJwtToken(loginRequest.getLogin(), userService.getUserByLogin(loginRequest.getLogin()).getRole().name());
+        String jwt = jwtUtils.generateJwtToken(loginRequest.getLogin(), user.getRole().name());
         System.out.println("token " + jwt);
 
-        Role role = userService.getUserByLogin(loginRequest.getLogin()).getRole();
-        System.out.println("role: " + role);
         System.out.println("data from SCH: " + SecurityContextHolder.getContext().getAuthentication().getName());
         var userdto = UserDTO.builder()
-                .login(loginRequest.getLogin())
+                .id(user.getId())
+                .login(user.getLogin())
                 .token(jwt)
-                .role(role)
+                .role(user.getRole())
                 .build();
         var responsedto = new ResponceDTO("success login", userdto);
 
@@ -68,7 +71,7 @@ public class LoginController {
     public Authentication authenticateUser(String login, String password) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         System.out.println(login + " " + password);
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(login, password));
+                new UsernamePasswordAuthenticationToken(login, userService.toSha1(password)));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return authentication;

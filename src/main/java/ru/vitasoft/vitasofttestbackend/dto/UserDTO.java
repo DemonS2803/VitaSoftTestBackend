@@ -11,6 +11,7 @@ import ru.vitasoft.vitasofttestbackend.enums.Role;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
+    private Long id;
     private String login;
     private String token;
     private Role role;
