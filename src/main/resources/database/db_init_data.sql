@@ -13,4 +13,4 @@ VALUES (1,admin,admin,ADMIN),
        (11,user8,user,USER),
        (12,user9,user,USER),
        (13,user10,user,USER)
-;s
+;

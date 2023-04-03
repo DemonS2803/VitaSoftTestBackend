@@ -8,6 +8,8 @@ import ru.vitasoft.vitasofttestbackend.enums.StatementStatus;
 import ru.vitasoft.vitasofttestbackend.services.StatementService;
 import ru.vitasoft.vitasofttestbackend.services.UserService;
 
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/api/operator")
 public class OperatorController {
@@ -26,6 +28,10 @@ public class OperatorController {
         System.out.println(userLoginPart);
         var statements = statementService.getStatementEntitiesByStatusAndUserLoginPart("SENT", userLoginPart, offset, limit, sortParam, isReverseSort);
         System.out.println(statements.size());
+        statements.stream().map(x -> {
+            x.setContent(String.join("-", x.getContent().split("")));
+            return x;
+        }).collect(Collectors.toList());
         return new ResponseEntity<>(statements, HttpStatus.OK);
     }
 

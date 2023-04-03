@@ -15,7 +15,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/VitaSoftDB
     username: postgres
-    password: qwerty
+    password: postgres
     driver-class-name: org.postgresql.Driver
 
 jwt:
