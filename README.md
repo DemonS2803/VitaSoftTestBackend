@@ -7,4 +7,4 @@ It contains role-based security and REST controllers for frontend. DB access rea
 
 To run app you need to download project and it's dependencies
 
-Next: change DB credentiials
+Next: change DB credentiials in ./src/main/recources/application.yaml
